@@ -1055,7 +1055,14 @@ export default function Countries({ countriesPromise }: CountriesProps) {
       )}
       <div className="pdf-report">
         <h1>Countries Explorer</h1>
-        <p>Generated {new Date().toLocaleDateString()}</p>
+        <p>
+          Generated{" "}
+          {new Date().toLocaleDateString(undefined, {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })}
+        </p>
         <p className="pdf-progress-label">Your exploration progress</p>
         <div className="pdf-summary">
           <span>
