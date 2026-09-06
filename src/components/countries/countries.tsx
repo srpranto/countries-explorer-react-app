@@ -305,7 +305,6 @@ export default function Countries({ countriesPromise }: CountriesProps) {
 
   // Toggle a country's visited state.
   const handleVisitedCountry = (country: CountryType) => {
-    preservedScrollY.current = window.scrollY;
     const code = countryCode(country);
     const alreadyVisited = visitedCountries.some(
       (item) => countryCode(item) === code,
