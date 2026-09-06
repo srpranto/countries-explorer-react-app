@@ -6,6 +6,7 @@ export interface CountryProps {
   country: CountryType;
   visited: boolean;
   handleVisitedCountry: (country: CountryType) => void;
+  onVisitStart?: (button: HTMLElement) => void;
   onSelect: (country: CountryType) => void;
   favorite: boolean;
   onToggleFavorite: (country: CountryType) => void;
@@ -18,6 +19,7 @@ export default function Country({
   country,
   visited,
   handleVisitedCountry,
+  onVisitStart,
   onSelect,
   favorite,
   onToggleFavorite,
@@ -25,13 +27,7 @@ export default function Country({
   const images = flag(country);
   const population = unwrap(country.population, "population");
   return (
-    <article
-      className={`relative flex min-w-0 flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-shadow duration-200 hover:shadow-xl ${
-        visited
-          ? "border-neutral-950 ring-2 ring-neutral-400 dark:border-neutral-100 dark:ring-neutral-700"
-          : "border-neutral-200 dark:border-neutral-800"
-      } dark:bg-neutral-900`}
-    >
+    <article className="relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-shadow duration-200 hover:shadow-xl dark:border-neutral-800 dark:bg-neutral-900">
       <div className="relative">
         <img
           src={images.svg}
@@ -58,12 +54,12 @@ export default function Country({
         <button
           type="button"
           onClick={() => onSelect(country)}
-          className="max-w-full break-words text-base font-bold text-neutral-950 hover:underline focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:text-white sm:text-lg"
+          className="max-w-full wrap-break-word text-base font-bold text-neutral-950 hover:underline focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:text-white sm:text-lg"
           aria-label={`View details for ${country.name.common}`}
         >
           {country.name.common}
         </button>
-        <p className="max-w-full break-words text-[11px] text-neutral-600 dark:text-neutral-300 sm:text-xs">
+        <p className="max-w-full wrap-break-word text-[11px] text-neutral-600 dark:text-neutral-300 sm:text-xs">
           {country.name.official}
         </p>
 
@@ -83,7 +79,11 @@ export default function Country({
         <Button
           type="button"
           variant={visited ? "default" : "outline"}
-          onMouseDown={(event) => event.preventDefault()}
+          onPointerDown={(event) => {
+            event.preventDefault();
+            onVisitStart?.(event.currentTarget);
+          }}
+          onFocus={(event) => onVisitStart?.(event.currentTarget)}
           onClick={() => handleVisitedCountry(country)}
           className={`w-full border transition-all duration-300 ${
             visited
