@@ -83,6 +83,7 @@ export default function Country({
         <Button
           type="button"
           variant={visited ? "default" : "outline"}
+          onMouseDown={(event) => event.preventDefault()}
           onClick={() => handleVisitedCountry(country)}
           className={`w-full border transition-all duration-300 ${
             visited
