@@ -449,36 +449,38 @@ export default function Countries({ countriesPromise }: CountriesProps) {
     <div className="mx-auto min-h-dvh w-full max-w-7xl overflow-hidden px-3 py-4 pb-10 sm:px-5 sm:py-6 sm:pb-12 lg:px-8">
       <header className="mb-7 flex flex-col gap-5">
         <div className="flex w-full min-w-0 flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="min-w-0">
-            <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-              Countries Explorer
-            </h1>
-            <p className="mt-1 text-sm text-neutral-400">
-              Explore countries and plan your next journey.
-            </p>
+          <div className="flex min-w-0 flex-1 flex-row-reverse items-start justify-between gap-4 sm:contents">
+            <div className="min-w-0 text-right sm:order-1 sm:text-left">
+              <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                Countries Explorer
+              </h1>
+              <p className="mt-1 text-sm text-neutral-400">
+                Explore countries and plan your next journey.
+              </p>
+            </div>
+            <div className="text-left sm:order-2 sm:flex-1 sm:text-center">
+              <time
+                className="clock-display block whitespace-nowrap text-xl tabular-nums text-white sm:text-2xl"
+                dateTime={currentTime.toISOString()}
+              >
+                {currentTime
+                  .toLocaleTimeString(undefined, {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                  .replace(/\s/g, "")}
+              </time>
+              <p className="mt-1 text-sm text-neutral-400">
+                {currentTime.toLocaleDateString(undefined, {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
           </div>
-          <div className="text-center sm:flex-1">
-            <time
-              className="clock-display block whitespace-nowrap text-xl tabular-nums text-white sm:text-2xl"
-              dateTime={currentTime.toISOString()}
-            >
-              {currentTime
-                .toLocaleTimeString(undefined, {
-                  hour: "numeric",
-                  minute: "2-digit",
-                  hour12: true,
-                })
-                .replace(/\s/g, "")}
-            </time>
-            <p className="mt-1 text-sm text-neutral-400">
-              {currentTime.toLocaleDateString(undefined, {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-          </div>
-          <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
+          <div className="flex w-full items-center gap-2 sm:order-3 sm:w-auto sm:gap-3">
             <button
               type="button"
               onClick={downloadPdf}
