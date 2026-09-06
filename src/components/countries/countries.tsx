@@ -75,6 +75,15 @@ function sortCountryList(countries: CountryType[], sort: string) {
   );
 }
 
+// Apply an immediate viewport correction without smooth scrolling.
+function scrollViewportTo(top: number) {
+  const root = document.documentElement;
+  const previousBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = "auto";
+  window.scrollTo(0, top);
+  root.style.scrollBehavior = previousBehavior;
+}
+
 // Manage explorer state.
 export default function Countries({ countriesPromise }: CountriesProps) {
   const countries = use(countriesPromise);
@@ -86,6 +95,10 @@ export default function Countries({ countriesPromise }: CountriesProps) {
   const [searchFocused, setSearchFocused] = useState(false);
   const [activeSuggestion, setActiveSuggestion] = useState(0);
   const searchInput = useRef<HTMLInputElement>(null);
+  const preservedCountryButton = useRef<{
+    element: HTMLElement;
+    top: number;
+  } | null>(null);
   const preservedScrollY = useRef<number | null>(null);
   const [selectedRegion, setSelectedRegion] = useState(
     params.get("region") ?? "all",
@@ -205,10 +218,21 @@ export default function Countries({ countriesPromise }: CountriesProps) {
     [nextCountries, sort],
   );
   useLayoutEffect(() => {
+    const countryButton = preservedCountryButton.current;
+    if (countryButton) {
+      if (countryButton.element.isConnected) {
+        scrollViewportTo(
+          window.scrollY +
+            countryButton.element.getBoundingClientRect().top -
+            countryButton.top,
+        );
+      }
+      preservedCountryButton.current = null;
+    }
     if (preservedScrollY.current === null) return;
-    window.scrollTo(0, preservedScrollY.current);
+    scrollViewportTo(preservedScrollY.current);
     preservedScrollY.current = null;
-  }, [visitedCountries.length]);
+  }, [visitedCountries.length, nextCountries.length]);
 
   // Persist visited countries.
   useEffect(() => {
@@ -304,6 +328,12 @@ export default function Countries({ countriesPromise }: CountriesProps) {
   }, []);
 
   // Toggle a country's visited state.
+  const preserveCountryButton = (button: HTMLElement) => {
+    preservedCountryButton.current = {
+      element: button,
+      top: button.getBoundingClientRect().top,
+    };
+  };
   const handleVisitedCountry = (country: CountryType) => {
     const code = countryCode(country);
     const alreadyVisited = visitedCountries.some(
@@ -885,6 +915,7 @@ export default function Countries({ countriesPromise }: CountriesProps) {
               (item) => countryCode(item) === countryCode(country),
             )}
             handleVisitedCountry={handleVisitedCountry}
+            onVisitStart={preserveCountryButton}
             onSelect={openCountry}
             favorite={favorites.includes(countryCode(country))}
             onToggleFavorite={toggleFavorite}
