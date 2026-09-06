@@ -132,6 +132,7 @@ export default function Countries({ countriesPromise }: CountriesProps) {
   const [fact, setFact] = useState("");
   const [factCountry, setFactCountry] = useState("");
   const [factLoading, setFactLoading] = useState(false);
+  const [currentTime, setCurrentTime] = useState(() => new Date());
   const dataUpdatedAt = sessionStorage.getItem("countries-fetched-at");
   const pageSize = 12;
 
@@ -305,6 +306,10 @@ export default function Countries({ countriesPromise }: CountriesProps) {
       ? `Countries Explorer · ${visitedCountries.length} visited`
       : "Countries Explorer";
   }, [search, selectedRegion, sort, currentPage, visitedCountries.length]);
+  useEffect(() => {
+    const clock = window.setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => window.clearInterval(clock);
+  }, []);
   // Support keyboard shortcuts.
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
@@ -452,6 +457,27 @@ export default function Countries({ countriesPromise }: CountriesProps) {
               Explore countries and plan your next journey.
             </p>
           </div>
+          <div className="text-center sm:flex-1">
+            <time
+              className="clock-display block whitespace-nowrap text-xl tabular-nums text-white sm:text-2xl"
+              dateTime={currentTime.toISOString()}
+            >
+              {currentTime
+                .toLocaleTimeString(undefined, {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                })
+                .replace(/\s/g, "")}
+            </time>
+            <p className="mt-1 text-sm text-neutral-400">
+              {currentTime.toLocaleDateString(undefined, {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+          </div>
           <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
             <button
               type="button"
@@ -493,7 +519,11 @@ export default function Countries({ countriesPromise }: CountriesProps) {
           <p className="text-sm text-neutral-300">
             Data last updated:{" "}
             {dataUpdatedAt
-              ? new Date(Number(dataUpdatedAt)).toLocaleDateString()
+              ? new Date(Number(dataUpdatedAt)).toLocaleDateString(undefined, {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })
               : "from cache"}
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 text-center">

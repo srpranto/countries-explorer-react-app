@@ -31,11 +31,14 @@
   }
 
   html.dark body {
-    background:
-      radial-gradient(circle at 15% 0%, #252525 0%, transparent 36%),
-      radial-gradient(circle at 90% 10%, #1d2630 0%, transparent 32%), #101010;
-    background-attachment: fixed;
     color: #e4e1da;
+  }
+
+  .clock-display {
+    font-family: inherit;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1;
   }
 
   h1,
@@ -207,11 +210,6 @@
       object-fit: cover;
       margin-bottom: 6px;
       border-radius: 6px;
-    }
-    .pdf-grid h2 {
-      margin: 0 0 3px;
-      font-size: 10pt;
-      line-height: 1.2;
     }
     .pdf-grid p {
       margin: 2px 0;
