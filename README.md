@@ -86,18 +86,3 @@ Run Vitest in watch mode while developing:
 ```bash
 npm run test:watch
 ```
-
-## Deploy to Vercel
-
-Countries Explorer is a Vite application and can be deployed directly from GitHub to Vercel.
-
-Use these project settings if Vercel does not detect them automatically:
-
-```text
-Framework Preset: Vite
-Build Command: npm run build
-Output Directory: dist
-Install Command: npm install
-```
-
-The application is a client-side site, so no server environment variables are required for the current setup.
