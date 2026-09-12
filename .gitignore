@@ -7,12 +7,15 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies and build outputs
 node_modules
 dist
 dist-ssr
 .vercel
 coverage
 .vite
+.vitest
+test-results
 *.tsbuildinfo
 *.local
 
@@ -26,8 +29,14 @@ coverage
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.tmp
+*.bak
+.eslintcache

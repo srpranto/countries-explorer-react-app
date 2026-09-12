@@ -82,7 +82,7 @@ export default function CountryStatusDialog({
             onClick={onChoosePlanned}
             className="h-auto flex-col items-start gap-1 p-4 text-left"
           >
-            <span> I want to visit it</span>
+            <span>I want to visit it</span>
             <span className="text-xs font-normal text-neutral-600">
               Add to your next destinations.
             </span>

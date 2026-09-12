@@ -54,12 +54,12 @@ export default function Country({
         <button
           type="button"
           onClick={() => onSelect(country)}
-          className="max-w-full wrap-break-word text-base font-bold text-neutral-950 hover:underline focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:text-white sm:text-lg"
+          className="max-w-full break-words text-base font-bold text-neutral-950 hover:underline focus:outline-none focus:ring-2 focus:ring-neutral-500 dark:text-white sm:text-lg"
           aria-label={`View details for ${country.name.common}`}
         >
           {country.name.common}
         </button>
-        <p className="max-w-full wrap-break-word text-[11px] text-neutral-600 dark:text-neutral-300 sm:text-xs">
+        <p className="max-w-full break-words text-[11px] text-neutral-600 dark:text-neutral-300 sm:text-xs">
           {country.name.official}
         </p>
 
@@ -88,7 +88,7 @@ export default function Country({
           className={`w-full border transition-all duration-300 ${
             visited
               ? "border-transparent bg-linear-to-r from-neutral-100 to-neutral-300 text-neutral-950 shadow-lg shadow-black/20 hover:from-white hover:to-neutral-200 hover:shadow-black/30"
-              : "border-white/20 bg-white/6 text-neutral-200 hover:border-transparent hover:bg-linear-to-r hover:from-neutral-800/95 hover:to-neutral-700/95 hover:text-white hover:shadow-lg hover:shadow-black/30 dark:border-white/20"
+              : "border-white/20 bg-white/6 text-neutral-200 hover:border-transparent hover:bg-linear-to-r hover:from-neutral-800/95 hover:to-neutral-700/95 hover:text-white hover:shadow-lg hover:shadow-black/30"
           }`}
         >
           {visited ? "Visited" : "Mark as Visited"}

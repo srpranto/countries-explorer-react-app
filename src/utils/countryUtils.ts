@@ -26,7 +26,7 @@ export function region(country: CountryType) {
 export function flag(country: CountryType) {
   const image = unwrap<{ png: string; svg: string }>(country.flags, "flags");
   return image
-    ? { png: image.svg || image.png, svg: image.svg || image.png }
+    ? { png: image.png || image.svg, svg: image.svg || image.png }
     : { png: "", svg: "" };
 }
 

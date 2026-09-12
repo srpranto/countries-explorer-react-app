@@ -67,35 +67,96 @@ function App() {
       key={attempt}
       onRetry={() => setAttempt((current) => current + 1)}
     >
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<SkeletonLoading />}>
         <Countries countriesPromise={countriesPromise()} />
       </Suspense>
     </ErrorBoundary>
   );
 }
 
-// Show the loading state.
-function Loading() {
+// Render the explorer skeleton loading state.
+function SkeletonLoading() {
   return (
-    <main
-      className="flex min-h-dvh items-center justify-center px-5 py-10 text-neutral-100"
-      aria-live="polite"
-      aria-label="Loading countries"
+    <div
+      role="status"
+      aria-busy="true"
+      aria-label="Loading countries explorer"
+      className="mx-auto min-h-dvh w-full max-w-7xl overflow-hidden px-3 py-4 pb-10 sm:px-5 sm:py-6 sm:pb-12 lg:px-8"
     >
-      <div className="w-full max-w-md rounded-2xl border border-neutral-800 bg-neutral-900 p-6 text-center shadow-2xl sm:p-8">
-        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border-2 border-neutral-700 border-t-neutral-100 motion-safe:animate-spin" />
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          Loading countries
-        </h1>
-        <p className="mt-2 text-sm text-neutral-400">
-          Preparing your explorer…
-        </p>
-        <div className="mt-6 space-y-2" aria-hidden="true">
-          <div className="h-2 animate-pulse rounded-full bg-neutral-800" />
-          <div className="mx-auto h-2 w-2/3 animate-pulse rounded-full bg-neutral-800" />
+      <span className="sr-only">Loading countries explorer…</span>
+      <header className="mb-7 flex flex-col gap-5">
+        <div className="flex w-full min-w-0 flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 flex-1 items-start justify-between gap-4 sm:contents">
+            <div className="min-w-0 text-left sm:order-1">
+              <div className="h-8 w-56 animate-pulse rounded-lg bg-neutral-800" />
+              <div className="mt-2 h-4 w-72 max-w-full animate-pulse rounded bg-neutral-800/60" />
+            </div>
+            <div className="text-right sm:order-2 sm:flex-1 sm:text-center">
+              <div className="ml-auto h-7 w-28 animate-pulse rounded bg-neutral-800 sm:mx-auto" />
+              <div className="ml-auto mt-2 h-4 w-36 animate-pulse rounded bg-neutral-800/60 sm:mx-auto" />
+            </div>
+          </div>
+          <div className="flex w-full items-center gap-2 sm:order-3 sm:w-auto sm:gap-3">
+            <div className="h-10 flex-1 animate-pulse rounded-lg bg-neutral-800 sm:w-28 sm:flex-none" />
+            <div className="h-10 flex-1 animate-pulse rounded-lg bg-neutral-800 sm:w-20 sm:flex-none" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className={`rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-3 ${
+                index === 2 ? "col-span-2 sm:col-span-1" : ""
+              }`}
+            >
+              <div className="h-4 w-20 animate-pulse rounded bg-neutral-800" />
+              <div className="mt-2 h-6 w-12 animate-pulse rounded bg-neutral-800" />
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-lg border border-neutral-800 bg-neutral-900 px-4 py-4">
+          <div className="h-4 w-44 animate-pulse rounded bg-neutral-800" />
+          <div className="mt-4 flex flex-col items-center gap-3">
+            <div className="h-14 w-14 animate-pulse rounded-full border-2 border-neutral-800" />
+            <div className="h-4 w-52 animate-pulse rounded bg-neutral-800/60" />
+          </div>
+        </div>
+      </header>
+
+      <div className="mb-6 rounded-2xl border border-white/10 bg-white/4 p-4 shadow-lg backdrop-blur-xl sm:p-5">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))]">
+          <div className="h-10 animate-pulse rounded-xl bg-neutral-800" />
+          <div className="h-10 animate-pulse rounded-xl bg-neutral-800" />
+          <div className="h-10 animate-pulse rounded-xl bg-neutral-800" />
+          <div className="h-10 animate-pulse rounded-xl bg-neutral-800" />
         </div>
       </div>
-    </main>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <div
+            key={index}
+            className="flex flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 shadow-sm"
+          >
+            <div className="aspect-video w-full animate-pulse bg-neutral-800" />
+            <div className="flex flex-1 flex-col items-center gap-2 p-4 text-center">
+              <div className="h-5 w-3/4 animate-pulse rounded bg-neutral-800" />
+              <div className="h-3 w-1/2 animate-pulse rounded bg-neutral-800/60" />
+              <div className="mt-2 flex w-full flex-col items-center gap-1.5">
+                <div className="h-3.5 w-2/3 animate-pulse rounded bg-neutral-800/50" />
+                <div className="h-3.5 w-1/2 animate-pulse rounded bg-neutral-800/50" />
+                <div className="h-3.5 w-1/3 animate-pulse rounded bg-neutral-800/50" />
+              </div>
+            </div>
+            <div className="p-4 pt-0">
+              <div className="h-10 w-full animate-pulse rounded-xl bg-neutral-800" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 

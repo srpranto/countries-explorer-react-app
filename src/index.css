@@ -34,40 +34,11 @@
     color: #e4e1da;
   }
 
-  .clock-display {
-    font-family: inherit;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    line-height: 1;
-  }
-
   h1,
   h2,
-  h3,
-  h4 {
+  h3 {
     line-height: 1.15;
     text-wrap: balance;
-  }
-
-  h1 {
-    font-size: clamp(1.75rem, 5vw, 3.25rem);
-  }
-  h2 {
-    font-size: clamp(1.5rem, 4vw, 2.25rem);
-  }
-  h3 {
-    font-size: clamp(1.125rem, 2vw, 1.35rem);
-  }
-
-  button,
-  a {
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  button,
-  input,
-  select {
-    font: inherit;
   }
 
   ::-webkit-scrollbar {

@@ -142,40 +142,32 @@ export default function Countries({ countriesPromise }: CountriesProps) {
   );
   const filteredCountries = useMemo(() => {
     const query = search.trim().toLowerCase();
-    return countries
-      .filter((country) => {
-        const matchesSearch =
-          !query ||
-          country.name.common.toLowerCase().includes(query) ||
-          capital(country).toLowerCase().includes(query);
-        return (
-          matchesSearch &&
-          (selectedRegion === "all" || region(country) === selectedRegion) &&
-          (statusFilter === "all" ||
-            (statusFilter === "visited" &&
-              visitedCountries.some(
-                (item) => countryCode(item) === countryCode(country),
-              )) ||
-            (statusFilter === "planned" &&
-              nextCountries.some(
-                (item) => countryCode(item) === countryCode(country),
-              )) ||
-            (statusFilter === "unvisited" &&
-              !visitedCountries.some(
-                (item) => countryCode(item) === countryCode(country),
-              )) ||
-            (statusFilter === "favorites" &&
-              favorites.includes(countryCode(country))))
-        );
-      })
-      .sort((a, b) =>
-        sort === "population"
-          ? (unwrap(b.population, "population") ?? 0) -
-            (unwrap(a.population, "population") ?? 0)
-          : sort === "region"
-            ? region(a).localeCompare(region(b))
-            : a.name.common.localeCompare(b.name.common),
+    const filtered = countries.filter((country) => {
+      const matchesSearch =
+        !query ||
+        country.name.common.toLowerCase().includes(query) ||
+        capital(country).toLowerCase().includes(query);
+      return (
+        matchesSearch &&
+        (selectedRegion === "all" || region(country) === selectedRegion) &&
+        (statusFilter === "all" ||
+          (statusFilter === "visited" &&
+            visitedCountries.some(
+              (item) => countryCode(item) === countryCode(country),
+            )) ||
+          (statusFilter === "planned" &&
+            nextCountries.some(
+              (item) => countryCode(item) === countryCode(country),
+            )) ||
+          (statusFilter === "unvisited" &&
+            !visitedCountries.some(
+              (item) => countryCode(item) === countryCode(country),
+            )) ||
+          (statusFilter === "favorites" &&
+            favorites.includes(countryCode(country))))
       );
+    });
+    return sortCountryList(filtered, sort);
   }, [
     countries,
     search,
@@ -460,7 +452,7 @@ export default function Countries({ countriesPromise }: CountriesProps) {
             </div>
             <div className="text-right sm:order-2 sm:flex-1 sm:text-center">
               <time
-                className="clock-display block whitespace-nowrap text-xl tabular-nums text-white sm:text-2xl"
+                className="block whitespace-nowrap text-xl font-medium leading-none tracking-[0.01em] tabular-nums text-white sm:text-2xl"
                 dateTime={currentTime.toISOString()}
               >
                 {currentTime
@@ -672,6 +664,7 @@ export default function Countries({ countriesPromise }: CountriesProps) {
               {sortedVisitedCountries.map((country, index) => (
                 <button
                   type="button"
+                  onClick={() => openCountry(country)}
                   aria-label={`Show details for ${country.name.common}`}
                   key={countryCode(country)}
                   className="group relative flex-none rounded-md border-0 bg-transparent p-0 focus:outline-none focus:ring-2 focus:ring-neutral-200"
@@ -682,12 +675,12 @@ export default function Countries({ countriesPromise }: CountriesProps) {
                     className="h-8 w-12 rounded-md object-cover shadow-sm ring-1 ring-neutral-600 transition group-hover:ring-2 group-hover:ring-neutral-200"
                   />
                   <span
-                    className={`pointer-events-none absolute top-10 z-50 w-44 max-w-[calc(100vw-2rem)] rounded-lg border border-neutral-600 bg-neutral-950 px-3 py-2 text-left text-white opacity-0 shadow-xl transition duration-150 group-hover:opacity-100 group-focus:opacity-100 ${index === 0 ? "left-0" : index === visitedCountries.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2"}`}
+                    className={`pointer-events-none absolute top-10 z-50 w-44 max-w-[calc(100vw-2rem)] rounded-lg border border-neutral-600 bg-neutral-950 px-3 py-2 text-left text-white opacity-0 shadow-xl transition duration-150 group-hover:opacity-100 group-focus:opacity-100 ${index === 0 ? "left-0" : index === sortedVisitedCountries.length - 1 ? "right-0" : "left-1/2 -translate-x-1/2"}`}
                   >
-                    <span className="block wrap-break-word text-sm font-semibold">
+                    <span className="block break-words text-sm font-semibold">
                       {country.name.common}
                     </span>
-                    <span className="mt-0.5 block wrap-break-word text-xs text-neutral-400">
+                    <span className="mt-0.5 block break-words text-xs text-neutral-400">
                       Capital: {capital(country)}
                     </span>
                   </span>
@@ -1270,7 +1263,7 @@ function Detail({ label, value }: { label: string; value: string }) {
       <span className="block text-xs uppercase tracking-wide text-neutral-500">
         {label}
       </span>
-      <span className="mt-1 block wrap-break-word text-neutral-100">
+      <span className="mt-1 block break-words text-neutral-100">
         {value}
       </span>
     </div>
