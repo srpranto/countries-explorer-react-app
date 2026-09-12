@@ -1263,9 +1263,7 @@ function Detail({ label, value }: { label: string; value: string }) {
       <span className="block text-xs uppercase tracking-wide text-neutral-500">
         {label}
       </span>
-      <span className="mt-1 block break-words text-neutral-100">
-        {value}
-      </span>
+      <span className="mt-1 block break-words text-neutral-100">{value}</span>
     </div>
   );
 }

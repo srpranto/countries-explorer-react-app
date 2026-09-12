@@ -28,12 +28,7 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {}
 
 // Render a styled button.
-export function Button({
-  className,
-  variant,
-  size,
-  ...props
-}: ButtonProps) {
+export function Button({ className, variant, size, ...props }: ButtonProps) {
   return (
     <button
       className={cn(buttonVariants({ variant, size, className }))}
